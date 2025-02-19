@@ -1,5 +1,5 @@
 import Tenzi from "./Tenzi"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
 import { nanoid } from "nanoid"
@@ -13,7 +13,7 @@ function App() {
           let arr = []
       for(let i=1; i<=10; i++) {
           let randNum = Math.floor((Math.random() * 6)+1)
-          arr.push({num: randNum, frozen: false, id: nanoid()})
+          arr.push({num: 7, frozen: false, id: nanoid()})
       }
       return arr
       }
@@ -21,7 +21,7 @@ function App() {
           return Math.floor(Math.random() * 6) + 1
       }
   
-      const [randArr, setRandArr] = useState(generateRandomArr())
+      const [randArr, setRandArr] = useState(() => generateRandomArr())
       
   
       function handleClickRoll() {
@@ -83,12 +83,20 @@ function App() {
       })
 
 
+      const rollButton = useRef(null)
+
+      useEffect(() => {
+        if (won) {
+            rollButton.current.focus()
+        }
+    }, [won])
+
       const {width, height} = useWindowSize()
   
 
   return (
     <div className="bg-[#242424] min-h-screen grid place-items-center font-poppins">
-      {won && <Confetti />}
+      {won && <Confetti width={width} height={height}/>}
       <div className="min-w-96 w-[40vw] px-4 py-10  bg-slate-100 rounded-md flex flex-col items-center gap-20">
             <div className="flex flex-col items-center gap-5">
             <h1 className="text-5xl font-semibold">Tenzies</h1>
@@ -98,7 +106,7 @@ function App() {
             <div className="grid grid-cols-5 gap-7 place-items-center ">
                 {tenziEls}
             </div>
-            <button onClick={won ? handleClickNewGame : handleClickRoll}  
+            <button ref={rollButton} onClick={won ? handleClickNewGame : handleClickRoll}  
             className={`rounded-md  px-5 cursor-pointer active:scale-95
             drop-shadow-lg active:drop-shadow-none py-2 bg-indigo-700 text-white duration-75 transition-all
             `}>{won ? "New Game" : "Roll"}</button>
