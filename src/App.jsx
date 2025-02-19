@@ -2,6 +2,7 @@ import Tenzi from "./Tenzi"
 import { useState, useEffect } from "react"
 import Confetti from 'react-confetti'
 import { useWindowSize } from 'react-use'
+import { nanoid } from "nanoid"
 
 
 
@@ -12,7 +13,7 @@ function App() {
           let arr = []
       for(let i=1; i<=10; i++) {
           let randNum = Math.floor((Math.random() * 6)+1)
-          arr.push({num: randNum, frozen: false})
+          arr.push({num: randNum, frozen: false, id: nanoid()})
       }
       return arr
       }
@@ -78,7 +79,7 @@ function App() {
   
       const tenziEls = randArr.map((obj, index)=> {
           
-          return <Tenzi key={index} index={index} num={obj.num} frozen={obj.frozen} freeze={handleClickFreeze}/>
+          return <Tenzi key={obj.id} index={index} num={obj.num} frozen={obj.frozen} freeze={handleClickFreeze}/>
       })
 
 
