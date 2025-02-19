@@ -8,12 +8,20 @@ import { nanoid } from "nanoid"
 
 
 function App() {
+  useEffect(() => {
+    document.title = "Tenzies";
+    const link = document.createElement("link");
+    link.rel = "icon";
+    link.type = "image/png";
+    link.href = "/dice.png";
+    document.head.appendChild(link);
+  }, []);
   
   function generateRandomArr() {
           let arr = []
       for(let i=1; i<=10; i++) {
           let randNum = Math.floor((Math.random() * 6)+1)
-          arr.push({num: 7, frozen: false, id: nanoid()})
+          arr.push({num: randNum, frozen: false, id: nanoid()})
       }
       return arr
       }
